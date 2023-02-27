@@ -1,0 +1,44 @@
+.bg-head {
+  background: rgb(2, 0, 36);
+  background: linear-gradient(
+    90deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(255, 1, 42, 1) 0%,
+    rgba(3, 3, 3, 1) 100%
+  );
+}
+.head-name-meetroom {
+  font-size: 40px;
+}
+body {
+  font-family: "Kanit", sans-serif !important;
+  background:         /* top, transparent black, faked with gradient */ linear-gradient(
+      rgba(0, 0, 0, 0.87),
+      rgba(0, 0, 0, 0.772)
+    ),
+    /* bottom, image */ url("../img/bg-meet-m.jpg");
+  /* Full height */
+  height: 100vh;
+  width: 100vw;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.body-row {
+  margin-top: 5%;
+}
+.text-meet-detail {
+  font-size: 40px;
+}
+.detail-time{
+  color: rgb(255, 122, 122);
+  font-size: 45px;
+}
+.hr-footer {
+  color: inherit;
+  background-color: white;
+}
+.detail-by{
+  font-size: 30px;
+}
