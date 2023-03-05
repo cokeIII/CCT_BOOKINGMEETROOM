@@ -6,7 +6,8 @@
 </head>
 <?php
 include "connect.php";
-
+session_start();
+$_SESSION["link_room"] = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 if (!isset($_COOKIE["people_id"])) {
     header("location: login.php");
 } else {
