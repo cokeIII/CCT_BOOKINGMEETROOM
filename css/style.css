@@ -10,14 +10,18 @@
 .head-name-meetroom {
   font-size: 40px;
 }
+html {
+  margin: 0;
+  height: 100%;
+  overflow-x: hidden;
+}
 body {
+  margin: 0;
+  height: 100%;
+  overflow-x: hidden;
   font-family: "Kanit", sans-serif !important;
-  background:         /* top, transparent black, faked with gradient */ linear-gradient(
-      rgba(0, 0, 0, 0.87),
-      rgba(0, 0, 0, 0.772)
-    ),
-    /* bottom, image */ url("../img/bg-meet-m.jpg");
-  /* Full height */
+  background: linear-gradient(rgba(0, 0, 0, 0.87), rgba(0, 0, 0, 0.772)),url("../img/bg-meet-m.jpg");
+
   height: 100vh;
   width: 100vw;
   background-size: cover;
@@ -31,7 +35,7 @@ body {
 .text-meet-detail {
   font-size: 40px;
 }
-.detail-time{
+.detail-time {
   color: rgb(255, 122, 122);
   font-size: 45px;
 }
@@ -39,6 +43,15 @@ body {
   color: inherit;
   background-color: white;
 }
-.detail-by{
+.detail-by {
   font-size: 30px;
+}
+
+.tabs {
+  display: flex;
+  flex-direction: row;
+}
+
+.tab {
+  border-top-left-radius: 5px;
 }
