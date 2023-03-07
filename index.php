@@ -7,6 +7,8 @@
 <?php
 include "connect.php";
 session_start();
+$people_id = "";
+$people_name  = "";
 $_SESSION["link_room"] = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 if (!isset($_COOKIE["people_id"])) {
     header("location: login.php");
@@ -16,7 +18,8 @@ if (!isset($_COOKIE["people_id"])) {
         $sql = "select * from meet_room where id = '$id' limit 1";
         $res = mysqli_query($conn, $sql);
         $row = mysqli_fetch_array($res);
-
+        $people_id = $_COOKIE["people_id"];
+        $people_name  = $_COOKIE["people_name"] . " " . $_COOKIE["people_surname"];
         $roomName = $row["name"];
     } else {
         header("location: selectRoom.php");
@@ -126,7 +129,9 @@ if (!isset($_COOKIE["people_id"])) {
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="">
+                <form action="addBooking.php" method="post" id="formBooking">
+                    <input type="hidden" name="meet_room_id" value="<?php echo $_GET["idRoom"]; ?>">
+                    <input type="hidden" name="user_id" value="<?php echo $people_id; ?>">
                     <label><strong>วันเวลาที่จอง</strong></label>
                     <div class="row">
                         <div class="col-md-6">
@@ -163,7 +168,7 @@ if (!isset($_COOKIE["people_id"])) {
                     <div class="row  mt-2">
                         <div class="col-md-6">
                             <label><strong>ชื่อผู้ทำการจอง</strong></label>
-                            <input class="form-control" type="text" name="people_name_booking" id="people_name_booking" required>
+                            <input value="<?php echo $people_name; ?>" class="form-control" type="text" name="people_name_booking" id="people_name_booking" required>
                         </div>
                         <div class="col-md-6">
                             <label><strong>ฝ่ายงานที่จอง</strong></label>
@@ -217,7 +222,61 @@ if (!isset($_COOKIE["people_id"])) {
         $(document).on("click", "#booking", function() {
             $('#bookingModal').modal('show');
         })
+
+        $(document).on("submit", "#formBooking", function(event) {
+            var frm = $('#formBooking')
+            event.preventDefault()
+            $.ajax({
+                type: frm.attr('method'),
+                url: frm.attr('action'),
+                data: frm.serialize(),
+                dataType: 'json',
+                success: function(data) {
+                    console.log('Submission was successful.');
+                    console.log(data)
+                    if (data.status == 200) {
+                        clearInput()
+                        $('#bookingModal').modal('hide');
+
+                        Swal.fire({
+                            title: 'จองสำเร็จ',
+                            text: 'รอการยืนยัน จากเจ้าหน้าที่',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        })
+                    } else if (data.status == 409) {
+                        clearInput()
+                        $('#bookingModal').modal('hide');
+
+                        let detailList = data.row;
+                        console.log(data.row);
+                        Swal.fire({
+                            title: 'จองสำเร็จ',
+                            html: 'รายการจองของท่านซ้อนทับกับ <br> รายการประชุม ' + detailList.meet_name + ' <br> วันที่ ' + detailList.time_strat + ' <br> ถึง ' + detailList.time_end + ' <br> รอการยืนยัน จากเจ้าหน้าที่เพิ่ออนุมัติ <br> หรือยกเลิกรายการด้วยตนเอง',
+                            icon: 'warning',
+                            confirmButtonText: 'OK'
+                        })
+                    } else {
+                        Swal.fire({
+                            title: 'จองไม่สำเร็จ',
+                            text: 'ระบบเกิดการผิดพลาด กรุณาติดต่อเจ้าหน้าที่',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        })
+                    }
+                },
+                error: function(data) {
+                    console.log('An error occurred.');
+                    console.log(data);
+                },
+            });
+
+        })
     })
+
+    function clearInput() {
+        $(':input').val('');
+    }
 
     function getTime() {
         var dt = new Date();
