@@ -95,6 +95,11 @@ if (!isset($_COOKIE["people_id"])) {
                 <button class="btn btn btn-outline-light" id="booking">จองห้องประชุม</button>
             </div>
         </div>
+        <div class="row justify-content-md-center mt-2">
+            <div class="col-md-4 d-grid">
+                <button class="btn btn btn-outline-danger" id="cancelMeet">ยกเลิกรายการประชุม</button>
+            </div>
+        </div>
     </div>
 </body>
 <div class="modal" tabindex="-1" id="moreMeetSoonModal">
@@ -204,6 +209,40 @@ if (!isset($_COOKIE["people_id"])) {
     </div>
 </div>
 
+<div class="modal" tabindex="-1" id="cancelModal">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">ยกเลิกรายการประชุม<span id="headMoreMeetSoonModal"></span></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <?php
+                // $people_id = "";
+                if (empty($people_id)) {
+                ?>
+                    <div class="d-flex">
+                        <input class="form-control me-1" id="searchCancel" type="search" placeholder="ใส่รหัสบัตรประชาชน" aria-label="Search">
+                        <button class="btn btn-outline-primary" type="submit" id="searchCancelBtn">ค้นหา</button>
+                    </div>
+                <?php } ?>
+                <table class="table text-nowrap" id="cancelMeetTable" width="100%">
+                    <thead>
+                        <th>ลำดับ</th>
+                        <th>ชื่อรายการ</th>
+                        <th>วันเวลา</th>
+                        <th></th>
+                    </thead>
+                    <tbody id="contentMeetCnacel"></tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 </html>
 <?php include "footerSetup.php" ?>
 <script>
@@ -221,6 +260,94 @@ if (!isset($_COOKIE["people_id"])) {
 
         $(document).on("click", "#booking", function() {
             $('#bookingModal').modal('show');
+        })
+        $(document).on("click", ".cancelMeet", function() {
+            let id = $(this).attr("id")
+            $.ajax({
+                type: 'POST',
+                url: 'cancelMeet.php',
+                data: {
+                    id: id
+                },
+                dataType: 'json',
+                success: function(data) {
+                    console.log('Submission was successful.');
+                    if(data == 200){
+                        Swal.fire({
+                            title: 'ยกเลิกสำเร็จ',
+                            html: 'รายการของท่านถูกยกเลิกแล้ว',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        })
+                        $('#cancelModal').modal('hide')
+                    } else {
+                        Swal.fire({
+                            title: 'ยกเลิกไม่สำเร็จ',
+                            html: 'รายการของท่านยังไม่ถูกยกเลิก กรุณาติดต่อเจ้าหน้าที่',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        })
+                    }                 
+                },
+                error: function(data) {
+                    console.log('An error occurred.')
+                    console.log(data);
+                },
+            });
+        })
+        $(document).on("click", "#searchCancelBtn", function() {
+            people_id = $("#searchCancel").val()
+            $.ajax({
+                type: 'POST',
+                url: 'getCancelMeet.php',
+                data: {
+                    people_id: people_id
+                },
+                dataType: 'json',
+                success: function(data) {
+                    console.log('Submission was successful.');
+                    $("#contentMeetCnacel").html(data)
+                    table = new DataTable('#cancelMeetTable', {
+                        responsive: true
+                    });
+                    $('#cancelModal').modal('show')
+                },
+                error: function(data) {
+                    console.log('An error occurred.')
+                    console.log(data);
+                },
+            });
+
+        })
+
+        $(document).on("click", "#cancelMeet", function() {
+            $("#cancelMeetTable").dataTable().fnDestroy()
+            let people_id = '<?php echo $people_id ?>'
+            if (people_id) {
+                $.ajax({
+                    type: 'POST',
+                    url: 'getCancelMeet.php',
+                    data: {
+                        people_id: people_id
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        console.log('Submission was successful.');
+                        $("#contentMeetCnacel").html(data)
+                        table = new DataTable('#cancelMeetTable', {
+                            scrollX: true,
+                            width: '100%',
+                            autoWidth: true
+                        });
+                        $('#cancelModal').modal('show')
+                    },
+                    error: function(data) {
+                        console.log('An error occurred.');
+                        console.log(data);
+                    },
+                });
+            }
+            $('#cancelModal').modal('show');
         })
 
         $(document).on("submit", "#formBooking", function(event) {
