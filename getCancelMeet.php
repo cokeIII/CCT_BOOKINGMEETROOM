@@ -32,6 +32,6 @@ if ($numRow > 0) {
         $i++;
     }
 } else {
-    $data = $sql;
+    $data = "ไม่มีรายการ";
 }
 echo json_encode($data);

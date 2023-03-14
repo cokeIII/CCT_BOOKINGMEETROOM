@@ -110,7 +110,7 @@ if (!isset($_COOKIE["people_id"])) {
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <table class="table">
+                <table class="table text-nowrap" id="moreMeetTable" width="100%">
                     <thead>
                         <th>ลำดับ</th>
                         <th>ชื่อรายการ</th>
@@ -254,8 +254,29 @@ if (!isset($_COOKIE["people_id"])) {
         }, 1000)
 
         $(document).on("click", "#moreMeetSoon", function() {
+            removeTable()
             $("#headMoreMeetSoonModal").html(roomName)
-            $('#moreMeetSoonModal').modal('show');
+            $.ajax({
+                type: 'POST',
+                url: 'getMeet.php',
+                data: {},
+                dataType: 'json',
+                success: function(data) {
+                    console.log('Submission was successful.');
+                    $("#contentMeetSoon").html(data)
+                    table = new DataTable('#moreMeetTable', {
+                        scrollX: true,
+                        width: '100%',
+                        autoWidth: true
+                    });
+                    $('#moreMeetSoonModal').modal('show');
+                    s
+                },
+                error: function(data) {
+                    console.log('An error occurred.');
+                    console.log(data);
+                },
+            });
         })
 
         $(document).on("click", "#booking", function() {
@@ -272,7 +293,7 @@ if (!isset($_COOKIE["people_id"])) {
                 dataType: 'json',
                 success: function(data) {
                     console.log('Submission was successful.');
-                    if(data == 200){
+                    if (data == 200) {
                         Swal.fire({
                             title: 'ยกเลิกสำเร็จ',
                             html: 'รายการของท่านถูกยกเลิกแล้ว',
@@ -287,7 +308,7 @@ if (!isset($_COOKIE["people_id"])) {
                             icon: 'error',
                             confirmButtonText: 'OK'
                         })
-                    }                 
+                    }
                 },
                 error: function(data) {
                     console.log('An error occurred.')
@@ -321,7 +342,7 @@ if (!isset($_COOKIE["people_id"])) {
         })
 
         $(document).on("click", "#cancelMeet", function() {
-            $("#cancelMeetTable").dataTable().fnDestroy()
+            removeTable()
             let people_id = '<?php echo $people_id ?>'
             if (people_id) {
                 $.ajax({
@@ -349,7 +370,6 @@ if (!isset($_COOKIE["people_id"])) {
             }
             $('#cancelModal').modal('show');
         })
-
         $(document).on("submit", "#formBooking", function(event) {
             var frm = $('#formBooking')
             event.preventDefault()
@@ -404,7 +424,11 @@ if (!isset($_COOKIE["people_id"])) {
     function clearInput() {
         $(':input').val('');
     }
+    function removeTable(){
+        $("#cancelMeetTable").dataTable().fnDestroy()
+        $("#moreMeetTable").dataTable().fnDestroy()
 
+    }
     function getTime() {
         var dt = new Date();
         let dateTH = dt.toLocaleDateString('th-TH', {
