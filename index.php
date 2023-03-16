@@ -103,18 +103,18 @@ if (!isset($_COOKIE["people_id"])) {
     </div>
 </body>
 <div class="modal" tabindex="-1" id="moreMeetSoonModal">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">รายการประชุมอื่นๆ <span id="headMoreMeetSoonModal"></span></h5>
+                <h5 class="modal-title">รายการประชุมอื่นๆ</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <table class="table text-nowrap" id="moreMeetTable" style="width: 100%">
+                <table class="table text-nowrap" id="moreMeetTable" style="width: 100% !important">
                     <thead>
-                        <th>ลำดับ</th>
-                        <th>ชื่อรายการ</th>
-                        <th>วันเวลา</th>
+                        <th style="width: 10% !important" id>ลำดับ</th>
+                        <th style="width: 50% !important">ชื่อรายการ</th>
+                        <th style="width: 40% !important">วันเวลา</th>
                     </thead>
                     <tbody id="contentMeetSoon"></tbody>
                 </table>
@@ -263,11 +263,12 @@ if (!isset($_COOKIE["people_id"])) {
                 dataType: 'json',
                 success: function(data) {
                     console.log('Submission was successful.');
-                    $("#contentMeetSoon").html(data)
+                    $('#moreMeetSoonModal').modal('show');
                     table = new DataTable('#moreMeetTable', {
                         scrollX: true,
-                    });
-                    $('#moreMeetSoonModal').modal('show');
+                        width: "100%",
+                    })
+                    $("#contentMeetSoon").html(data)
                 },
                 error: function(data) {
                     console.log('An error occurred.');
@@ -328,7 +329,6 @@ if (!isset($_COOKIE["people_id"])) {
                     table = new DataTable('#cancelMeetTable', {
                         scrollX: true,
                         width: '100%',
-                        autoWidth: true
                     });
                     $('#cancelModal').modal('show')
                 },
