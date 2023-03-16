@@ -19,6 +19,7 @@ $res = mysqli_query($conn, $sql);
 $data = "";
 $numRow = mysqli_num_rows($res);
 $i = 1;
+
 if ($numRow > 0) {
     while ($row = mysqli_fetch_array($res)) {
         $data .= '<tr>';

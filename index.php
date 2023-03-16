@@ -95,7 +95,7 @@ if (!isset($_COOKIE["people_id"])) {
                 <button class="btn btn btn-outline-light" id="booking">จองห้องประชุม</button>
             </div>
         </div>
-        <div class="row justify-content-md-center mt-2">
+        <div class="row justify-content-md-center mt-2 mb-3">
             <div class="col-md-4 d-grid">
                 <button class="btn btn btn-outline-danger" id="cancelMeet">ยกเลิกรายการประชุม</button>
             </div>
@@ -103,14 +103,14 @@ if (!isset($_COOKIE["people_id"])) {
     </div>
 </body>
 <div class="modal" tabindex="-1" id="moreMeetSoonModal">
-    <div class="modal-dialog modal-xl">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">รายการประชุมอื่นๆ <span id="headMoreMeetSoonModal"></span></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <table class="table text-nowrap" id="moreMeetTable" width="100%">
+                <table class="table text-nowrap" id="moreMeetTable" style="width: 100%">
                     <thead>
                         <th>ลำดับ</th>
                         <th>ชื่อรายการ</th>
@@ -127,7 +127,7 @@ if (!isset($_COOKIE["people_id"])) {
 </div>
 
 <div class="modal" tabindex="-1" id="bookingModal">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">จองห้องประชุม</h5>
@@ -266,11 +266,8 @@ if (!isset($_COOKIE["people_id"])) {
                     $("#contentMeetSoon").html(data)
                     table = new DataTable('#moreMeetTable', {
                         scrollX: true,
-                        width: '100%',
-                        autoWidth: true
                     });
                     $('#moreMeetSoonModal').modal('show');
-                    s
                 },
                 error: function(data) {
                     console.log('An error occurred.');
@@ -329,7 +326,9 @@ if (!isset($_COOKIE["people_id"])) {
                     console.log('Submission was successful.');
                     $("#contentMeetCnacel").html(data)
                     table = new DataTable('#cancelMeetTable', {
-                        responsive: true
+                        scrollX: true,
+                        width: '100%',
+                        autoWidth: true
                     });
                     $('#cancelModal').modal('show')
                 },
@@ -424,11 +423,13 @@ if (!isset($_COOKIE["people_id"])) {
     function clearInput() {
         $(':input').val('');
     }
-    function removeTable(){
+
+    function removeTable() {
         $("#cancelMeetTable").dataTable().fnDestroy()
         $("#moreMeetTable").dataTable().fnDestroy()
 
     }
+
     function getTime() {
         var dt = new Date();
         let dateTH = dt.toLocaleDateString('th-TH', {
