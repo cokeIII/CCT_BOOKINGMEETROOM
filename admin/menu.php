@@ -18,7 +18,7 @@
     <!-- Divider -->
     <hr class="sidebar-divider">
     <li class="nav-item active">
-        <a class="nav-link" href="home.php">
+        <a class="nav-link" href="roomManager.php">
             <i class="fas fa-door-open"></i>
             <span>จัดการห้องประชุม</span></a>
     </li>
@@ -28,7 +28,7 @@
             <!-- Divider -->
             <hr class="sidebar-divider">
             <li class="nav-item active">
-                <a class="nav-link" href="home.php">
+                <a class="nav-link" href="userManager.php">
                     <i class="fas fa-user-alt"></i>
                     <span>จัดการผู้ใช้งาน</span></a>
             </li>
@@ -37,7 +37,7 @@
     <!-- Divider -->
     <hr class="sidebar-divider">
     <li class="nav-item active">
-        <a class="nav-link" href="home.php">
+        <a class="nav-link" href="history.php">
             <i class="fas fa-history"></i>
             <span>ประวัติการจอง</span></a>
     </li>

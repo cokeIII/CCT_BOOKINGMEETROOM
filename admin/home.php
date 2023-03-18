@@ -32,7 +32,7 @@
 
     .alert-box {
         width: auto;
-        height: 6vh;
+        height: 10vh;
     }
 </style>
 
@@ -85,7 +85,7 @@
                                         <th>ฝ่ายงาน</th>
                                         <th>เบอร์ติดต่อ</th>
                                         <th>รายละเอียด</th>
-                                        <th>สถานะ</th>
+                                        <th>สถานะรายการจอง</th>
                                     </tr>
                                 </thead>
                                 <tbody>
