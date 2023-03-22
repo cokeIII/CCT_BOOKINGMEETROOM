@@ -14,7 +14,7 @@ function DateThai($strDate)
     return "$strDay $strMonthThai $strYear, $strHour:$strMinute";
 }
 
-$sql = "select * from booking where status_booking = 'อนุมัติ' order by time_strat";
+$sql = "select * from booking where status_booking = 'อนุมัติ' and time_end > CURRENT_TIMESTAMP order by time_strat";
 $res = mysqli_query($conn, $sql);
 $data = "";
 $numRow = mysqli_num_rows($res);

@@ -54,24 +54,60 @@ if (!isset($_COOKIE["people_id"])) {
                     </div>
                 </div>
             </div>
+            <?php
+            $sqlSoon = "select * from booking 
+                where time_strat > CURRENT_TIMESTAMP and status_booking = 'อนุมัติ' and meet_room_id='$id' order by time_strat limit 2";
+            $resSoon = mysqli_query($conn, $sqlSoon);
+
+            $numRowSoon = mysqli_num_rows($resSoon);
+            if ($numRowSoon > 0) {
+                while ($rowSoon[] = mysqli_fetch_array($resSoon)) {
+                }
+
+                // echo "<pre>";
+                // print_r($rowSoon);
+                // echo "</pre>";
+
+                $timeS = substr(explode(" ", $rowSoon[0]["time_strat"])[1], 0, 5);
+                $timeE = substr(explode(" ", $rowSoon[0]["time_end"])[1], 0, 5);
+            }
+            ?>
             <div class="row justify-content-md-center">
                 <div class="col-md-6">
                     <div class="text-light text-meet-detail mt-5">
-                        ประชุมครูผู้ช่วย
+                        <?php
+                        if ($numRowSoon > 0) {
+                            echo $rowSoon[0]["meet_name"];
+                        } else {
+                            echo "ไม่มีรายการ";
+                        }
+                        ?>
                     </div>
                 </div>
             </div>
             <div class="row justify-content-md-center">
                 <div class="col-md-6">
                     <div class="detail-time">
-                        09:00 - 10:45 น.
+                        <?php
+                        if ($numRowSoon > 0) {
+                            echo $timeS . " - " . $timeE . " น.";
+                        } else {
+                            echo "-";
+                        }
+                        ?>
                     </div>
                 </div>
             </div>
             <div class="row justify-content-md-center">
                 <div class="col-md-6">
                     <div class="detail-by text-light">
-                        By ผอ.
+                        <?php
+                        if ($numRowSoon > 0) {
+                            echo "By " . $rowSoon[0]["people_name_booking"];
+                        } else {
+                            echo "";
+                        }
+                        ?>
                     </div>
                 </div>
             </div>
@@ -80,7 +116,15 @@ if (!isset($_COOKIE["people_id"])) {
             <div class="col-md-12  text-light">
                 <hr class="hr-footer">
                 <div class="meet-soon text-center">
-                    Next : ประชุมนักศึกษาฝึกงาน 13.30 - 15.30 น.
+                    <?php
+                    if ($numRowSoon > 1) {
+                        $timeS = substr(explode(" ", $rowSoon[1]["time_strat"])[1], 0, 5);
+                        $timeE = substr(explode(" ", $rowSoon[1]["time_end"])[1], 0, 5);
+                        echo "Next : " . $rowSoon[1]["meet_name"] . " " . $timeS . " - " . $timeE . "น.";
+                    } else {
+                        echo "Next : ไม่มีรายการ";
+                    }
+                    ?>
                 </div>
                 <hr class="hr-footer">
             </div>

@@ -1,5 +1,34 @@
 <?php
 include "connect.php";
+
+function sendLineNotify($message, $tokens)
+{
+    $token = $tokens;
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, "https://notify-api.line.me/api/notify");
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, "message=" . $message);
+    $headers = array('Content-type: application/x-www-form-urlencoded', 'Authorization: Bearer ' . $token . '',);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    $result = curl_exec($ch);
+
+    if (curl_error($ch)) {
+        // echo 'error:' . curl_error($ch);
+    } else {
+        $res = json_decode($result, true);
+        // echo "status : " . $res['status'];
+        // echo "message : " . $res['message'];
+    }
+    curl_close($ch);
+}
+
+$sqlToken = "select line_noti from users";
+$resToken = mysqli_query($conn, $sqlToken);
+
 $data = array();
 $meet_room_id = $_POST["meet_room_id"];
 $time_strat = new DateTimeImmutable($_POST["time_strat"]);
@@ -59,6 +88,11 @@ if ($numRowCheck > 0) {
         $data["status"] = "409";
         $data["row"] = $rowCheck;
         $data["sql"] = $sqlCheck;
+        while ($rowToken = mysqli_fetch_array($resToken)) {
+            $mess = "จองห้องประชุม\nหัวข้อ: ".$meet_name."\nเวลา: ".$time_strat." - ".$time_end."\nผู้จอง: $people_name_booking\nเบอร์ติดต่อ: $tel\n**ซ้อนรายการอื่น";
+            $tokens =  $rowToken["line_noti"];
+            sendLineNotify($mess, $tokens);
+        }
     } else {
         $data["status"] = "410";
         echo $sql;
@@ -70,6 +104,11 @@ if ($numRowCheck > 0) {
     if ($res) {
         $data["status"] = "200";
         $data["sql"] = $sqlCheck;
+        while ($rowToken = mysqli_fetch_array($resToken)) {
+            $mess = "จองห้องประชุม\nหัวข้อ: ".$meet_name."\nเวลา: ".$time_strat." - ".$time_end."\nผู้จอง: $people_name_booking\nเบอร์ติดต่อ: $tel\n**ซ้อนรายการอื่น";
+            $tokens =  $rowToken["line_noti"];
+            sendLineNotify($mess, $tokens);
+        }
     } else {
         $data["status"] = "410";
         echo $sql;

@@ -10,6 +10,7 @@
     if (empty($_SESSION["user_id"])) {
         header("location: index.php");
     }
+
     ?>
 
 </head>
@@ -58,6 +59,7 @@
                                         <th>ชื่อห้องประชุม</th>
                                         <th>รูป</th>
                                         <th>สถานะ</th>
+                                        <th>QR code</th>
                                         <th></th>
                                         <th></th>
                                     </tr>
@@ -74,6 +76,7 @@
                                             <td><?php echo $row["name"]; ?></td>
                                             <td><button path="<?php echo $row["pic"]; ?>" class="btn btn-secondary btnPic">รูป</button></td>
                                             <td><?php echo $row["status"]; ?></td>
+                                            <td> <img src="QRcode.php?id=<?php echo $row["id"]; ?>" alt=""></td>
                                             <td><button id="<?php echo $row["id"]; ?>" class="btn btn-warning btnEdit">แก้ไข</button></td>
                                             <td><button id="<?php echo $row["id"]; ?>" class="btn btn-danger btnDel">ลบ</button></td>
                                         </tr>
