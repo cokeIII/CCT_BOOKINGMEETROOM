@@ -10,7 +10,7 @@ session_start();
 $people_id = "";
 $people_name  = "";
 $_SESSION["link_room"] = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-if (!isset($_COOKIE["people_id"])) {
+if (!isset($_COOKIE["people_id"]) && !isset($_SESSION["people_id"])) {
     header("location: login.php");
 } else {
     if (!empty($_GET["idRoom"])) {
@@ -42,7 +42,7 @@ if (!isset($_COOKIE["people_id"])) {
             </div>
             <div class="col-md-12">
                 <div class="head-status">
-                    ว่าง
+
                 </div>
             </div>
         </div>
@@ -291,6 +291,28 @@ if (!isset($_COOKIE["people_id"])) {
 <?php include "footerSetup.php" ?>
 <script>
     $(document).ready(function() {
+        $.ajax({
+            type: 'POST',
+            url: 'checkStatusMeet.php',
+            data: {
+                id: '<?php echo $id; ?>'
+            },
+            dataType: 'json',
+            success: function(data) {
+                console.log('Submission was successful.');
+                if (data.name) {
+                    $(".head-status").html("ไม่ว่าง<br>รายการที่ดำเนินการอยู่: " + data.name + " " + data.time)
+                } else {
+                    $(".head-status").html("ว่าง")
+                }
+                console.log(data)
+            },
+            error: function(data) {
+                console.log('An error occurred.');
+                console.log(data);
+            },
+        });
+
         let roomName = "<?php echo $roomName; ?>"
         $("#nowDate").html(getTime())
         setInterval(function() {

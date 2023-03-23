@@ -8,6 +8,8 @@ $res = mysqli_query($conn, $sql);
 $row = mysqli_fetch_array($res);
 $rowCount = mysqli_num_rows($res);
 if ($rowCount > 0) {
+    $_SESSION["people_id"] = $row["people_id"];
+    $_SESSION["people_name"] = $row["people_name"]." ".$row["people_surname"];
     setcookie("people_id", $row["people_id"], time() + (86400 * 30), "/"); // 86400 = 1 day
     setcookie("people_name", $row["people_name"], time() + (86400 * 30), "/");
     setcookie("people_surname", $row["people_surname"], time() + (86400 * 30), "/");

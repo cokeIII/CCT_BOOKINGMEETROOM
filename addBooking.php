@@ -105,7 +105,7 @@ if ($numRowCheck > 0) {
         $data["status"] = "200";
         $data["sql"] = $sqlCheck;
         while ($rowToken = mysqli_fetch_array($resToken)) {
-            $mess = "จองห้องประชุม\nหัวข้อ: ".$meet_name."\nเวลา: ".$time_strat." - ".$time_end."\nผู้จอง: $people_name_booking\nเบอร์ติดต่อ: $tel\n**ซ้อนรายการอื่น";
+            $mess = "จองห้องประชุม\nหัวข้อ: ".$meet_name."\nเวลา: ".$time_strat." - ".$time_end."\nผู้จอง: $people_name_booking\nเบอร์ติดต่อ: $tel";
             $tokens =  $rowToken["line_noti"];
             sendLineNotify($mess, $tokens);
         }
