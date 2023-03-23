@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 07, 2023 at 12:27 PM
+-- Generation Time: Mar 23, 2023 at 06:55 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.0.25
 
@@ -42,16 +42,9 @@ CREATE TABLE `booking` (
   `date_time_stamp` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `status_booking` varchar(50) NOT NULL,
   `note` text NOT NULL,
-  `user_id` varchar(15) NOT NULL
+  `user_id` varchar(15) NOT NULL,
+  `make_list` varchar(250) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `booking`
---
-
-INSERT INTO `booking` (`id`, `meet_room_id`, `time_strat`, `time_end`, `meet_name`, `number_people`, `type_people`, `detail_meet`, `people_name_booking`, `department_booking`, `tel`, `date_time_stamp`, `status_booking`, `note`, `user_id`) VALUES
-(25, 1, '2023-03-07 20:25:00', '2023-03-07 21:25:00', 'ฝึกงาน', 210, 'หัวหน้างานทวภาคี', 'notebook', 'นายกษมา เจริญศรี', 'งานอาชีวศึกษาทวิภาคี', '0800533202', '2023-03-07 11:25:37', 'รอการยืนยัน', 'notebook', '1209501099179'),
-(26, 0, '2023-03-07 20:25:00', '2023-03-07 21:26:00', 'ฝึกงาน', 210, 'หัวหน้างานทวภาคี', 'test', 'test', 'งานอาชีวศึกษาทวิภาคี', '0800533202', '2023-03-07 11:26:46', 'รอการยืนยัน', 'test', '');
 
 -- --------------------------------------------------------
 
@@ -65,14 +58,6 @@ CREATE TABLE `meet_room` (
   `pic` varchar(200) NOT NULL,
   `status` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `meet_room`
---
-
-INSERT INTO `meet_room` (`id`, `name`, `pic`, `status`) VALUES
-(1, 'ห้องประชุม 1', 'meet_room1.jpg', 'ว่าง'),
-(2, 'ห้องประชุม 2', 'meet_room2.jpg', 'ว่าง');
 
 -- --------------------------------------------------------
 
@@ -176,6 +161,28 @@ CREATE TABLE `people_dep` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
+  `username` varchar(150) NOT NULL,
+  `password` varchar(150) NOT NULL,
+  `status` varchar(50) NOT NULL,
+  `line_noti` text NOT NULL,
+  `time_stamp` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `username`, `password`, `status`, `line_noti`, `time_stamp`) VALUES
+(1, 'admin', '2023', 'admin', '', '2023-03-14 08:19:03');
+
+-- --------------------------------------------------------
+
+--
 -- Structure for view `people`
 --
 DROP TABLE IF EXISTS `people`;
@@ -208,6 +215,12 @@ ALTER TABLE `meet_room`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -215,13 +228,19 @@ ALTER TABLE `meet_room`
 -- AUTO_INCREMENT for table `booking`
 --
 ALTER TABLE `booking`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `meet_room`
 --
 ALTER TABLE `meet_room`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
