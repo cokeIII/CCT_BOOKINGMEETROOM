@@ -13,7 +13,7 @@ $_SESSION["link_room"] = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on'
 if (!isset($_COOKIE["people_id"]) && !isset($_SESSION["people_id"])) {
     header("location: login.php");
 } else {
-    if (!empty($_GET["idRoom"])) {
+    if (!empty($_GET["idRoom"]) || $_GET["idRoom"] == '0') {
         $id = $_GET["idRoom"];
         $sql = "select * from meet_room where id = '$id' limit 1";
         $res = mysqli_query($conn, $sql);
@@ -131,7 +131,7 @@ if (!isset($_COOKIE["people_id"]) && !isset($_SESSION["people_id"])) {
         </div>
         <div class="row justify-content-md-center mt-2">
             <div class="col-md-4 d-grid">
-                <button class="btn btn btn-outline-secondary" id="moreMeetSoon"> รายการประชุมอื่นๆ</button>
+                <button class="btn btn btn-outline-light" id="moreMeetSoon"> รายการประชุมอื่นๆ</button>
             </div>
         </div>
         <div class="row justify-content-md-center mt-2">
@@ -188,7 +188,7 @@ if (!isset($_COOKIE["people_id"]) && !isset($_SESSION["people_id"])) {
                             <input class="form-control" type="datetime-local" name="time_strat" id="time_strat" required>
                         </div>
                         <div class="col-md-6">
-                            <label>จบ</label>
+                            <label>สิ้นสุด</label>
                             <input class="form-control" type="datetime-local" name="time_end" id="time_end" required>
                         </div>
                     </div>
@@ -222,7 +222,7 @@ if (!isset($_COOKIE["people_id"]) && !isset($_SESSION["people_id"])) {
                         <div class="col-md-6">
                             <label><strong>ฝ่ายงานที่จอง</strong></label>
                             <select class="form-control" name="department_booking" id="department_booking" required>
-                                <option value="">-- กรุณาเลือกฝายงาน --</option>
+                                <option value="">-- กรุณาเลือก --</option>
                                 <?php
                                 $sqlDep = "select people_dep_id,people_dep_name from people_dep";
                                 $resDep = mysqli_query($conn, $sqlDep);

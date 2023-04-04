@@ -31,10 +31,12 @@ $resToken = mysqli_query($conn, $sqlToken);
 
 $data = array();
 $meet_room_id = $_POST["meet_room_id"];
-$time_strat = new DateTimeImmutable($_POST["time_strat"]);
-$time_strat  = $time_strat->format('Y-m-d H:i:s');
-$time_end = new DateTimeImmutable($_POST["time_end"]);
-$time_end  = $time_end->format('Y-m-d H:i:s');
+/*$time_strat = new DateTimeImmutable($_POST["time_strat"]);
+$time_strat  = $time_strat->format('Y-m-d H:i:s');*/
+$time_strat  = $_POST["time_strat"];
+/*$time_end = new DateTimeImmutable($_POST["time_end"]);
+$time_end  = $time_end->format('Y-m-d H:i:s');*/
+$time_end  = $_POST["time_end"];
 $meet_name = $_POST["meet_name"];
 $number_people = $_POST["number_people"];
 $type_people = $_POST["type_people"];
@@ -75,7 +77,6 @@ $sql = "insert into booking (
         '$note',
         '$user_id'
     )";
-
 $sqlCheck = "select *
 from booking 
 where meet_room_id = '$meet_room_id' and ((time_strat BETWEEN '$time_strat' and '$time_end') or (time_end BETWEEN '$time_strat' and '$time_end')) or ((time_strat <= '$time_strat' and '$time_strat' <= time_end) or (time_strat <= '$time_end' and '$time_end' <= time_end))";

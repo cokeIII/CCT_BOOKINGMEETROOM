@@ -12,23 +12,24 @@
 }
 html {
   margin: 0;
-  height: 100%;
+  min-height: 100%;
   overflow-x: hidden;
 }
 body {
   margin: 0;
-  height: 100%;
   overflow-x: hidden;
   font-family: "Kanit", sans-serif !important;
   background: linear-gradient(rgba(0, 0, 0, 0.87), rgba(0, 0, 0, 0.772)),url("../img/bg-meet-m.jpg");
 
   height: 100vh;
   width: 100vw;
-  background-size: cover;
+  -webkit-background-size: 100%,100%;
+  -moz-background-size: 100%,100%;
+  -o-background-size: 100%,100%;
+  background-size: 100%,100%;
   background-position: center;
   background-repeat: no-repeat;
 }
-
 .body-row {
   margin-top: 5%;
 }

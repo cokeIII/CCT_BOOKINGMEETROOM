@@ -4,4 +4,4 @@ $id = $_GET['id'];
 $url = $_SERVER['SERVER_NAME'];
 
 include('../phpqrcode/qrlib.php');
-QRcode::png($url.'/CCT_BOOKINGMEETROOM/index.php?idRoom='.$id);
+QRcode::png('http://'.$url.'/ctc_meet/index.php?idRoom='.$id);

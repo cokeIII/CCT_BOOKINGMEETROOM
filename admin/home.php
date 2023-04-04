@@ -181,7 +181,7 @@
                             <input class="form-control" type="datetime-local" name="time_strat" id="time_strat" disabled>
                         </div>
                         <div class="col-md-6">
-                            <label>จบ</label>
+                            <label>สิ้นสุด</label>
                             <input class="form-control" type="datetime-local" name="time_end" id="time_end" disabled>
                         </div>
                     </div>
