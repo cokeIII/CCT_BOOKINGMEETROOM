@@ -13,6 +13,12 @@
     }
     ?>
 </head>
+<style>
+    .pic-room {
+        width: auto !important;
+        height: 300px !important;
+    }
+</style>
 
 <body>
     <div class="container">
@@ -33,7 +39,7 @@
                                     <h5><?php echo $row["name"] ?></h5>
                                 </div>
                                 <div class="card-body">
-                                    <img src="img/<?php echo $row["pic"] ?>" class="img-fluid">
+                                    <img src="img/<?php echo $row["pic"] ?>" class="img-fluid pic-room">
                                 </div>
                                 <div class="card-footer">
                                     <a href="index.php?idRoom=<?php echo $row["id"]; ?>" class="btn btn-primary float-end">เลือก</a>
