@@ -34,7 +34,7 @@
                     while ($row = mysqli_fetch_array($res)) {
                     ?>
                         <div class="col-md-4">
-                            <div class="card">
+                            <div class="card mt-3">
                                 <div class="card-header">
                                     <h5><?php echo $row["name"] ?></h5>
                                 </div>
