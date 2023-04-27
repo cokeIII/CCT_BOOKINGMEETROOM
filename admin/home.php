@@ -86,6 +86,7 @@
                                         <th>เบอร์ติดต่อ</th>
                                         <th>รายละเอียด</th>
                                         <th>สถานะรายการจอง</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -115,6 +116,9 @@
                                                     <option value="ยกเลิก" class="text-danger" <?php echo ($row["status_booking"] == "ยกเลิก") ? "selected" : "" ?>>ยกเลิก</option>
                                                     <option value="อนุมัติ" class="text-success" <?php echo ($row["status_booking"] == "อนุมัติ") ? "selected" : "" ?>>อนุมัติ</option>
                                                 </select>
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-danger delBooking" id="<?php echo $row["bId"]; ?>">ลบ</button>
                                             </td>
                                         </tr>
                                     <?php } ?>
@@ -239,6 +243,31 @@
             width: "100%",
             lengthMenu: [50, 100, 200, 500],
             responsive: true
+        })
+
+        $(document).on('click', '.delBooking', function() {
+            if (confirm('ต้องการลบรายการ')) {
+                $.ajax({
+                    type: 'POST',
+                    url: 'delBookings.php',
+                    data: {
+                        id: $(this).attr('id'),
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        console.log('Submission was successful.');
+                        if (data == "200") {
+                            window.location.replace("home.php");
+                        } else {
+                            
+                        }
+                    },
+                    error: function(data) {
+                        console.log('An error occurred.')
+                        console.log(data);
+                    },
+                });
+            }
         })
     })
 
