@@ -51,7 +51,9 @@ body {
 .detail-by {
   font-size: 30px;
 }
-
+.detail-dep{
+  font-size: 18px;
+}
 .tabs {
   display: flex;
   flex-direction: row;

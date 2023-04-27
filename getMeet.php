@@ -26,6 +26,8 @@ if ($numRow > 0) {
         $data .= '<tr>';
         $data .= '<td>' . $i . '</td>';
         $data .= '<td>' . $row['meet_name'] . '</td>';
+        $data .= '<td>' . $row['people_name_booking'] . '</td>';
+        $data .= '<td>' . $row['department_booking'] . '</td>';
         $data .= '<td>' . DateThai($row['time_strat']) . ' - <br>' . DateThai($row['time_end']) . '</td>';
         $data .= '</tr>';
 

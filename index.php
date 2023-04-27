@@ -140,6 +140,19 @@ if (!isset($_COOKIE["people_id"]) && !isset($_SESSION["people_id"])) {
                     </div>
                 </div>
             </div>
+            <div class="row justify-content-md-center">
+                <div class="col-md-6">
+                    <div class="detail-dep text-light">
+                        <?php
+                        if ($numRowSoon > 0) {
+                            echo $rowSoon[0]["department_booking"];
+                        } else {
+                            echo "";
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="row justify-content-md-center mt-5">
             <div class="col-md-12  text-light">
@@ -195,9 +208,11 @@ if (!isset($_COOKIE["people_id"]) && !isset($_SESSION["people_id"])) {
             <div class="modal-body">
                 <table class="table text-nowrap" id="moreMeetTable" style="width: 100% !important">
                     <thead>
-                        <th style="width: 10% !important" id>ลำดับ</th>
-                        <th style="width: 50% !important">ชื่อรายการ</th>
-                        <th style="width: 40% !important">วันเวลา</th>
+                        <th ></th>
+                        <th ></th>
+                        <th ></th>
+                        <th ></th>
+                        <th ></th>
                     </thead>
                     <tbody id="contentMeetSoon"></tbody>
                 </table>
