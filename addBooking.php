@@ -99,7 +99,7 @@ if ($numRowCheck > 0) {
         $data["row"] = $rowCheck;
         $data["sql"] = $sqlCheck;
         while ($rowToken = mysqli_fetch_array($resToken)) {
-            $mess = "จองห้องประชุม" . getRoomName($meet_room_id) . "\nหัวข้อ: " . $meet_name . "\nเวลา: " . $time_strat . " - " . $time_end . "\nฝ่ายงาน: $department_booking" . "\nผู้จอง: $people_name_booking\nเบอร์ติดต่อ: $tel\n**ซ้อนรายการอื่น";
+            $mess = "จองห้องประชุม" . getRoomName($meet_room_id) . "\nหัวข้อ: " . $meet_name . "\nเวลา: " . $time_strat . " - " . $time_end . "\nฝ่ายงาน: $department_booking" . "\nผู้จอง: $people_name_booking\nเบอร์ติดต่อ: $tel\n**การจองห้องประชุมซ้ำกับรายการอื่น";
             $tokens =  $rowToken["line_noti"];
             sendLineNotify($mess, $tokens);
         }
