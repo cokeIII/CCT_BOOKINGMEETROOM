@@ -1,6 +1,14 @@
 <?php
 include "connect.php";
+function getRoomName($id)
+{
+    global $conn;
+    $sqlN = "select name from meet_room where id = '$id' limit 1";
+    $resN = mysqli_query($conn, $sqlN);
+    $rowN = mysqli_fetch_array($resN);
 
+    return $rowN["name"];
+}
 function sendLineNotify($message, $tokens)
 {
     $token = $tokens;
@@ -31,6 +39,7 @@ $resToken = mysqli_query($conn, $sqlToken);
 
 $data = array();
 $meet_room_id = $_POST["meet_room_id"];
+
 /*$time_strat = new DateTimeImmutable($_POST["time_strat"]);
 $time_strat  = $time_strat->format('Y-m-d H:i:s');*/
 $time_strat  = $_POST["time_strat"];
@@ -90,7 +99,7 @@ if ($numRowCheck > 0) {
         $data["row"] = $rowCheck;
         $data["sql"] = $sqlCheck;
         while ($rowToken = mysqli_fetch_array($resToken)) {
-            $mess = "จองห้องประชุม\nหัวข้อ: ".$meet_name."\nเวลา: ".$time_strat." - ".$time_end."\nผู้จอง: $people_name_booking\nเบอร์ติดต่อ: $tel\n**ซ้อนรายการอื่น";
+            $mess = "จองห้องประชุม" . getRoomName($meet_room_id) . "\nหัวข้อ: " . $meet_name . "\nเวลา: " . $time_strat . " - " . $time_end . "\nฝ่ายงาน: $department_booking" . "\nผู้จอง: $people_name_booking\nเบอร์ติดต่อ: $tel\n**ซ้อนรายการอื่น";
             $tokens =  $rowToken["line_noti"];
             sendLineNotify($mess, $tokens);
         }
@@ -106,7 +115,7 @@ if ($numRowCheck > 0) {
         $data["status"] = "200";
         $data["sql"] = $sqlCheck;
         while ($rowToken = mysqli_fetch_array($resToken)) {
-            $mess = "จองห้องประชุม\nหัวข้อ: ".$meet_name."\nเวลา: ".$time_strat." - ".$time_end."\nผู้จอง: $people_name_booking\nเบอร์ติดต่อ: $tel";
+            $mess = "จองห้องประชุม" . getRoomName($meet_room_id) . "\nหัวข้อ: " . $meet_name . "\nเวลา: " . $time_strat . " - " . $time_end . "\nฝ่ายงาน: $department_booking" . "\nผู้จอง: $people_name_booking\nเบอร์ติดต่อ: $tel";
             $tokens =  $rowToken["line_noti"];
             sendLineNotify($mess, $tokens);
         }
