@@ -29,4 +29,6 @@ function DateThai($strDate)
 
 ?>
 
-<?php header('Content-Type: text/html; charset=UTF-8'); session_start();?>
+<?php header('Content-Type: text/html; charset=UTF-8');
+session_start();
+error_reporting(E_ERROR | E_PARSE); ?>

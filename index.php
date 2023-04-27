@@ -131,7 +131,7 @@ if (!isset($_COOKIE["people_id"]) && !isset($_SESSION["people_id"])) {
         </div>
         <div class="row justify-content-md-center mt-2">
             <div class="col-md-4 d-grid">
-                <button class="btn btn btn-outline-light" id="moreMeetSoon"> รายการประชุมอื่นๆ</button>
+                <button class="btn btn btn-outline-light" id="moreMeetSoon" roomId="<?php echo $id; ?>"> รายการประชุมอื่นๆ</button>
             </div>
         </div>
         <div class="row justify-content-md-center mt-2">
@@ -185,11 +185,11 @@ if (!isset($_COOKIE["people_id"]) && !isset($_SESSION["people_id"])) {
                     <div class="row">
                         <div class="col-md-6">
                             <label>เริ่ม</label>
-                            <input class="form-control" type="datetime-local" name="time_strat" id="time_strat" required>
+                            <input class="form-control timePick" type="text" name="time_strat" id="time_strat" required>
                         </div>
                         <div class="col-md-6">
                             <label>สิ้นสุด</label>
-                            <input class="form-control" type="datetime-local" name="time_end" id="time_end" required>
+                            <input class="form-control timePick" type="text" name="time_end" id="time_end" required>
                         </div>
                     </div>
                     <div class="row mt-2">
@@ -291,6 +291,10 @@ if (!isset($_COOKIE["people_id"]) && !isset($_SESSION["people_id"])) {
 <?php include "footerSetup.php" ?>
 <script>
     $(document).ready(function() {
+        jQuery.datetimepicker.setLocale('th')
+        jQuery('.timePick').datetimepicker({
+            step: 30
+        });
         $.ajax({
             type: 'POST',
             url: 'checkStatusMeet.php',
@@ -325,7 +329,9 @@ if (!isset($_COOKIE["people_id"]) && !isset($_SESSION["people_id"])) {
             $.ajax({
                 type: 'POST',
                 url: 'getMeet.php',
-                data: {},
+                data: {
+                    roomId:$(this).attr('roomId')
+                },
                 dataType: 'json',
                 success: function(data) {
                     console.log('Submission was successful.');
