@@ -34,11 +34,15 @@ body {
   margin-top: 5%;
 }
 .text-meet-detail {
-  font-size: 40px;
+  font-size: 36px;
+}
+.detail-date {
+  color: rgb(255, 122, 122);
+  font-size: 26px;
 }
 .detail-time {
   color: rgb(255, 122, 122);
-  font-size: 45px;
+  font-size: 42px;
 }
 .hr-footer {
   color: inherit;

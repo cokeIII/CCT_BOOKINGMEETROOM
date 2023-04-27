@@ -5,6 +5,19 @@
     <?php include "headerSetup.php" ?>
 </head>
 <?php
+function DateThai($strDate)
+{
+    $strYear = date("Y", strtotime($strDate)) + 543;
+    $strMonth = date("n", strtotime($strDate));
+    $strDay = date("j", strtotime($strDate));
+    $strHour = date("H", strtotime($strDate));
+    $strMinute = date("i", strtotime($strDate));
+    $strSeconds = date("s", strtotime($strDate));
+    $strMonthCut = array("", "ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค.");
+    $strMonthThai = $strMonthCut[$strMonth];
+    return "$strDay $strMonthThai $strYear";
+}
+
 include "connect.php";
 session_start();
 $people_id = "";
@@ -67,7 +80,8 @@ if (!isset($_COOKIE["people_id"]) && !isset($_SESSION["people_id"])) {
                 // echo "<pre>";
                 // print_r($rowSoon);
                 // echo "</pre>";
-
+                $dateS = DateThai(explode(" ", $rowSoon[0]["time_strat"])[0]);
+                $dateE = DateThai(explode(" ", $rowSoon[0]["time_end"])[0]);
                 $timeS = substr(explode(" ", $rowSoon[0]["time_strat"])[1], 0, 5);
                 $timeE = substr(explode(" ", $rowSoon[0]["time_end"])[1], 0, 5);
             }
@@ -80,6 +94,21 @@ if (!isset($_COOKIE["people_id"]) && !isset($_SESSION["people_id"])) {
                             echo $rowSoon[0]["meet_name"];
                         } else {
                             echo "ไม่มีรายการ";
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-md-center">
+                <div class="col-md-6">
+                    <div class="detail-date">
+                        <?php
+                        if ($numRowSoon > 0) {
+                            if ($dateS == $dateE) {
+                                echo $dateS;
+                            } else {
+                                echo $dateS . " - " . $dateE;
+                            }
                         }
                         ?>
                     </div>
@@ -118,9 +147,19 @@ if (!isset($_COOKIE["people_id"]) && !isset($_SESSION["people_id"])) {
                 <div class="meet-soon text-center">
                     <?php
                     if ($numRowSoon > 1) {
+                        $dateS = DateThai(explode(" ", $rowSoon[1]["time_strat"])[0]);
+                        $dateE = DateThai(explode(" ", $rowSoon[1]["time_end"])[0]);
                         $timeS = substr(explode(" ", $rowSoon[1]["time_strat"])[1], 0, 5);
                         $timeE = substr(explode(" ", $rowSoon[1]["time_end"])[1], 0, 5);
-                        echo "Next : " . $rowSoon[1]["meet_name"] . " " . $timeS . " - " . $timeE . "น.";
+                        $dateTemp = "";
+
+                        if ($dateS == $dateE) {
+                            $dateTemp = $dateS;
+                        } else {
+                            $dateTemp = $dateS . " - " . $dateE;
+                        }
+
+                        echo "Next : " . $rowSoon[1]["meet_name"] . " <br>" . $dateTemp . " (" . $timeS . " - " . $timeE . "น.)";
                     } else {
                         echo "Next : ไม่มีรายการ";
                     }
@@ -330,7 +369,7 @@ if (!isset($_COOKIE["people_id"]) && !isset($_SESSION["people_id"])) {
                 type: 'POST',
                 url: 'getMeet.php',
                 data: {
-                    roomId:$(this).attr('roomId')
+                    roomId: $(this).attr('roomId')
                 },
                 dataType: 'json',
                 success: function(data) {
