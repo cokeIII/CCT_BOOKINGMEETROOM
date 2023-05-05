@@ -41,6 +41,12 @@
             <i class="fas fa-history"></i>
             <span>ประวัติการจอง</span></a>
     </li>
+    <hr class="sidebar-divider">
+    <li class="nav-item active">
+        <a class="nav-link" href="charts.php">
+            <i class="fas fa-chart-area"></i>
+            <span>สถิติการจอง</span></a>
+    </li>
     <!-- Heading -->
     <!-- <div class="sidebar-heading">
         Interface
