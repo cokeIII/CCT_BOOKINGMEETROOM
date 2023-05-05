@@ -206,13 +206,18 @@ if (!isset($_COOKIE["people_id"]) && !isset($_SESSION["people_id"])) {
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12 mb-4">
+                        <button class="btn btn-info float-end" id="btnCalendar" roomId="<?php echo $id; ?>">ดูแบบปฏิทิน</button>
+                    </div>
+                </div>
                 <table class="table text-nowrap" id="moreMeetTable" style="width: 100% !important">
                     <thead>
-                        <th ></th>
-                        <th ></th>
-                        <th ></th>
-                        <th ></th>
-                        <th ></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
                     </thead>
                     <tbody id="contentMeetSoon"></tbody>
                 </table>
@@ -341,10 +346,71 @@ if (!isset($_COOKIE["people_id"]) && !isset($_SESSION["people_id"])) {
     </div>
 </div>
 
+<!-- calendar -->
+<div class="modal" tabindex="-1" role="dialog" id="modalCalendar">
+    <div class="modal-dialog modal-fullscreen" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">ปฏิทิน</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id='calendar'></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 </html>
 <?php include "footerSetup.php" ?>
 <script>
     $(document).ready(function() {
+        $(document).on('click', '#btnCalendar', function() {
+            let roomId = $(this).attr('roomId')
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                timeZone: 'UTC+7',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                events: function(fetchInfo, successCallback, failureCallback) { //custom events function to be called every time the view changes
+                    $.ajax({
+                        url: 'getMeetData.php',
+                        type: 'POST',
+                        data: {
+                            roomId: roomId
+                        },
+                        dataType: 'json',
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            alert('Error loading events: ' + textStatus + " - " + errorThrown);
+                        },
+                        success: function(data) {
+                            console.log(data)
+                            successCallback(data) //pass the event data to fullCalendar via the supplied callback function)
+                        }
+                    }).done(function(data, textStatus, jqXHR) {
+
+                    });
+                    $('#modalCalendar').modal('show')
+                },
+                eventDidMount: function(info) {
+                    $(info.el).tooltip({
+                        title: info.event.extendedProps.description,
+                        placement: "top",
+                        trigger: "hover",
+                        container: "body",
+                        html: true,
+                    });
+                },
+            });
+            calendar.render()
+        })
         jQuery.datetimepicker.setLocale('th')
         jQuery('.timePick').datetimepicker({
             step: 30
