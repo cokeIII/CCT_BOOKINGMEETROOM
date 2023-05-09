@@ -3,7 +3,7 @@ require_once "connect.php";
 $id = $_POST["id"];
 $sql = "select *
 from booking 
-where CURRENT_TIMESTAMP BETWEEN time_strat and time_end and meet_room_id='$id' limit 1";
+where (CURRENT_TIMESTAMP BETWEEN time_strat and time_end) and meet_room_id='$id' and status_booking = 'อนุมัติ' limit 1";
 $data = array();
 $res = mysqli_query($conn, $sql);
 $row = mysqli_fetch_array($res);
