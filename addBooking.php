@@ -1,5 +1,8 @@
 <?php
 include "connect.php";
+if (empty($_POST["meet_room_id"]) || $_POST["meet_room_id"] == 0) {
+    header("location: selectRoom.php");
+}
 function getRoomName($id)
 {
     global $conn;

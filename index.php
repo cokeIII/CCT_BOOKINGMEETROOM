@@ -26,7 +26,7 @@ $_SESSION["link_room"] = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on'
 if (!isset($_COOKIE["people_id"]) && !isset($_SESSION["people_id"])) {
     header("location: login.php");
 } else {
-    if (!empty($_GET["idRoom"]) || $_GET["idRoom"] == '0') {
+    if (!empty($_GET["idRoom"]) || $_GET["idRoom"] != '0') {
         $id = $_GET["idRoom"];
         $sql = "select * from meet_room where id = '$id' limit 1";
         $res = mysqli_query($conn, $sql);
