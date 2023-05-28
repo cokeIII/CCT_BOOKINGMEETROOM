@@ -107,6 +107,17 @@
                          <canvas id="myAreaChart"></canvas>
                      </div>
                      <!-- Approach -->
+                     <hr>
+                     <div class="row mt-3">
+                         <div class="col-md-6">
+                             <div id="chartProgress">
+
+                             </div>
+                         </div>
+                         <div class="col-md-6 mt-auto">
+                             <canvas id="myPieChart"></canvas>
+                         </div>
+                     </div>
 
                  </div>
              </div>
@@ -149,6 +160,7 @@
          // Set new default font family and font color to mimic Bootstrap's default styling
          Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
          Chart.defaults.global.defaultFontColor = '#858796';
+         let yearChart = $('#yearChart').val()
 
          function number_format(number, decimals, dec_point, thousands_sep) {
              // *     example: number_format(1234.56, 2, ',', ' ');
@@ -174,18 +186,73 @@
              }
              return s.join(dec);
          }
+         chartProgress()
+
+         function chartProgress() {
+             $.ajax({
+                 type: 'POST',
+                 url: 'getProgress.php',
+                 data: {
+                     yearChart: yearChart,
+                 },
+                 success: function(resData) {
+                     $('#chartProgress').html(resData)
+                 }
+             })
+         }
+
          let color = {}
          color['ห้องประชุมพิกุล'] = '#ed544a'
          color['ห้องประชุมทิวสน'] = '#dedc6d'
          color['ห้องประชุม อีอีซี'] = '#57cf5d'
          color['ห้องประชุมกาสะลอง'] = '#54d9e3'
          color['หอประชุมคมสัน'] = '#ca26eb'
-         let yearChart = $('#yearChart').val()
+
          let chartData = []
-         var myLineChart =
-             loadChart()
+         var myLineChart = []
+         loadChart()
+         var myPieChart = []
+         loadChartPie()
          $('#yearChart').change(function() {
              yearChart = $('#yearChart').val()
+             chartProgress()
+             $.ajax({
+                 type: 'POST',
+                 url: 'getPieChart.php',
+                 data: {
+                     yearChart: yearChart,
+                 },
+                 dataType: 'json',
+                 success: function(resData) {
+                     console.log(resData)
+                     let labels = []
+                     let datas = []
+                     let backgroundColor = []
+                     if (Object.keys(resData).length) {
+
+                         $.each(resData.label, function(keyR, valueR) {
+                             labels.push(valueR + " (%) ")
+                             backgroundColor.push(color[valueR])
+                         })
+
+                         $.each(resData.data, function(keyR, valueR) {
+                             datas.push(valueR)
+                         })
+                     }
+                     data = {
+                         labels: labels,
+                         datasets: [{
+                             data: datas,
+                             backgroundColor: backgroundColor,
+                             hoverBackgroundColor: 'white',
+                             hoverBorderColor: "rgba(234, 236, 244, 1)",
+                         }],
+                     }
+                     myPieChart.data = data ? data : [];
+                     myPieChart.update()
+                 }
+             })
+
              $.ajax({
                  type: 'POST',
                  url: 'getAreaChart.php',
@@ -195,6 +262,7 @@
                  dataType: 'json',
                  success: function(data) {
                      console.log(data)
+                     chartData = []
                      let i = 0
                      if (Object.keys(data).length) {
                          $.each(data, function(keyR, valueR) {
@@ -220,15 +288,78 @@
                              i++
                          })
                      } else {
-                        chartData = []
+                         chartData = []
                      }
 
                      myLineChart.data.datasets = chartData
-                     console.log(chartData)
                      myLineChart.update()
                  }
              })
          })
+
+         // Pie Chart Example
+         function loadChartPie() {
+             let data = {}
+             $.ajax({
+                 type: 'POST',
+                 url: 'getPieChart.php',
+                 data: {
+                     yearChart: yearChart,
+                 },
+                 dataType: 'json',
+                 success: function(resData) {
+                     console.log(resData)
+                     let labels = []
+                     let datas = []
+                     let backgroundColor = []
+                     if (Object.keys(resData).length) {
+
+                         $.each(resData.label, function(keyR, valueR) {
+                             labels.push(valueR + " (%) ")
+                             backgroundColor.push(color[valueR])
+                         })
+
+                         $.each(resData.data, function(keyR, valueR) {
+                             datas.push(valueR)
+                         })
+                     }
+                     data = {
+                         labels: labels,
+                         datasets: [{
+                             data: datas,
+                             backgroundColor: backgroundColor,
+                             hoverBackgroundColor: 'white',
+                             hoverBorderColor: "rgba(234, 236, 244, 1)",
+                         }],
+                     }
+                     console.log(data)
+                     var ctx = document.getElementById("myPieChart");
+                     myPieChart = new Chart(ctx, {
+                         type: 'doughnut',
+                         data: data,
+                         options: {
+                             aspectRatio: 1.3,
+                             maintainAspectRatio: false,
+                             tooltips: {
+                                 backgroundColor: "rgb(255,255,255)",
+                                 bodyFontColor: "#858796",
+                                 borderColor: '#dddfeb',
+                                 borderWidth: 1,
+                                 xPadding: 15,
+                                 yPadding: 15,
+                                 displayColors: false,
+                                 caretPadding: 10,
+                             },
+                             legend: {
+                                 display: false
+                             },
+
+                         },
+                     });
+                 }
+             })
+         }
+
 
          function loadChart() {
              $.ajax({
