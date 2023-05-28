@@ -47,6 +47,12 @@
             <i class="fas fa-chart-area"></i>
             <span>สถิติการจอง</span></a>
     </li>
+    <hr class="sidebar-divider">
+    <li class="nav-item active">
+        <a class="nav-link" href="calendar.php">
+            <i class="fas fa-calendar"></i>
+            <span>ปฏิทิน</span></a>
+    </li>
     <!-- Heading -->
     <!-- <div class="sidebar-heading">
         Interface

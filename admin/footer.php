@@ -15,3 +15,7 @@
     <!-- <script src="js/demo/chart-area-demo.js"></script>
     <script src="js/demo/chart-pie-demo.js"></script> -->
     <script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.js"></script>
+
+    <script src="
+https://cdn.jsdelivr.net/npm/fullcalendar@6.1.6/index.global.min.js
+"></script>
