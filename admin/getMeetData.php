@@ -25,7 +25,7 @@ $res = mysqli_query($conn, $sql);
 $data = array();
 
 while ($row = mysqli_fetch_array($res)) {
-    $data[] = ['title' => $row['meet_name'], 'start' => $row['time_strat'], 'end' => $row['time_end'], 'description' => $row['meet_name'] . '<br> เริ่ม ' . DateThai($row['time_strat']) . '<br> จบ ' . DateThai($row['time_end'])];
+    $data[] = ['title' => $row['meet_name'], 'start' => $row['time_strat'], 'end' => $row['time_end'], 'description' => $row['meet_name'] .'<br>('.$row['mname'].')'. '<br> เริ่ม ' . DateThai($row['time_strat']) . '<br> จบ ' . DateThai($row['time_end'])];
 }
 
 echo json_encode($data);

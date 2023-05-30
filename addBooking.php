@@ -57,7 +57,7 @@ $people_name_booking = $_POST["people_name_booking"];
 $department_booking = $_POST["department_booking"];
 $tel = $_POST["tel"];
 $status_booking = "รอการยืนยัน";
-$note = $_POST["detail_meet"];
+// $note = $_POST["detail_meet"];
 $user_id = $_POST["user_id"];
 
 $sql = "insert into booking (
@@ -72,7 +72,6 @@ $sql = "insert into booking (
     department_booking,
     tel,
     status_booking,
-    note,
     user_id
     ) values (
         '$meet_room_id',
@@ -86,7 +85,6 @@ $sql = "insert into booking (
         '$department_booking',
         '$tel',
         '$status_booking',
-        '$note',
         '$user_id'
     )";
 $sqlCheck = "select * from booking b inner join

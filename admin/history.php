@@ -65,6 +65,66 @@
                             <h6 class="m-0 font-weight-bold text-primary">ประวัติรายการจอง</h6>
                         </div>
                         <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            ประจำปี
+                                        </div>
+                                        <?php
+                                        $year = date('Y');
+                                        if (!empty($_GET['yearReport'])) {
+                                            $year = $_GET['yearReport'] - 543;
+                                        }
+                                        ?>
+                                        <div class="col-md-3">
+                                            <select class="form-control" name="yearReport" id="yearReport">
+                                                <option value="<?php echo date('Y') + 543; ?>" <?php echo (($year + 543) == (date('Y') + 543) ? 'selected' : ''); ?>> <?php echo date('Y') + 543; ?> </option>
+                                                <option value="<?php echo date('Y') + 542; ?>" <?php echo (($year + 543) == (date('Y') + 542) ? 'selected' : ''); ?>><?php echo date('Y') + 542; ?></option>
+                                                <option value="<?php echo date('Y') + 541; ?>" <?php echo (($year + 543) == (date('Y') + 541) ? 'selected' : ''); ?>><?php echo date('Y') + 541; ?></option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2">
+                                            เดือน
+                                        </div>
+                                        <?php
+                                        $thai_month_arr = array(
+                                            "0" => "-",
+                                            "1" => "มกราคม",
+                                            "2" => "กุมภาพันธ์",
+                                            "3" => "มีนาคม",
+                                            "4" => "เมษายน",
+                                            "5" => "พฤษภาคม",
+                                            "6" => "มิถุนายน",
+                                            "7" => "กรกฎาคม",
+                                            "8" => "สิงหาคม",
+                                            "9" => "กันยายน",
+                                            "10" => "ตุลาคม",
+                                            "11" => "พฤศจิกายน",
+                                            "12" => "ธันวาคม"
+                                        );
+
+                                        $month = 0;
+                                        if (!empty($_GET['monthReport'])) {
+                                            $month = $_GET['monthReport'];
+                                        }
+                                        ?>
+                                        <div class="col-md-3">
+                                            <select class="form-control" name="monthReport" id="monthReport">
+                                                <?php for ($i = 0; $i < count($thai_month_arr); $i++) { ?>
+                                                    <option value="<?php echo $i; ?>" <?php echo (($month) == ($i) ? 'selected' : ''); ?>> <?php echo $thai_month_arr[$i]; ?> </option>
+                                                <?php } ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="float-right">
+                                        <a target="_blank" href="excelHistory.php?yearReport=<?php echo $year; ?>&monthReport=<?php echo $month; ?>" id="reportExcel"><img src="img/excel.png" alt="" width="50px" height="auto"></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
                             <table class="table text-nowrap" id="bookingTable" width="100%">
                                 <thead>
                                     <tr>
@@ -83,12 +143,23 @@
                                 </thead>
                                 <tbody>
                                     <?php
+
                                     $i = 0;
-                                    $sql = "select b.id as bId,m.name as mname,b.tel as btel, u.*,b.*,m.*,p.people_name,p.people_surname from booking b
-                                    inner join meet_room m on m.id = b.meet_room_id
-                                    inner join people p on p.people_id = b.user_id
-                                    left join users u on b.make_list = u.id
-                                    ";
+                                    if ($month != 0) {
+                                        $sql = "select b.id as bId,m.name as mname,b.tel as btel, u.*,b.*,m.*,p.people_name,p.people_surname from booking b
+                                        inner join meet_room m on m.id = b.meet_room_id
+                                        inner join people p on p.people_id = b.user_id
+                                        left join users u on b.make_list = u.id
+                                        where YEAR(time_strat) = '$year' and MONTH(time_strat) = $month
+                                        ";
+                                    } else {
+                                        $sql = "select b.id as bId,m.name as mname,b.tel as btel, u.*,b.*,m.*,p.people_name,p.people_surname from booking b
+                                        inner join meet_room m on m.id = b.meet_room_id
+                                        inner join people p on p.people_id = b.user_id
+                                        left join users u on b.make_list = u.id
+                                        where YEAR(time_strat) = '$year'
+                                        ";
+                                    }
                                     $res = mysqli_query($conn, $sql);
                                     while ($row = mysqli_fetch_array($res)) {
                                     ?>
@@ -228,7 +299,16 @@
             lengthMenu: [50, 100, 200, 500],
             responsive: true
         })
-
+        $("#yearReport").change(function() {
+            let yearReport = $("#yearReport").val()
+            let monthReport = $("#monthReport").val()
+            window.location.replace("history.php?yearReport=" + yearReport + '&monthReport=' + monthReport);
+        })
+        $("#monthReport").change(function() {
+            let yearReport = $("#yearReport").val()
+            let monthReport = $("#monthReport").val()
+            window.location.replace("history.php?yearReport=" + yearReport + '&monthReport=' + monthReport);
+        })
         $(document).on("click", ".btn-detail", function() {
             let id = $(this).attr("id")
             $.ajax({
