@@ -44,6 +44,10 @@
          border-radius: 10px;
          color: white;
      }
+     #sumAllMeet{
+        color: blue;
+        font-size: 30px;
+     }
  </style>
 
  <body id="page-top">
@@ -69,7 +73,7 @@
                  <div class="container-fluid">
                      <div class="row">
                          <div class="col-md-4">
-                             <h4>จำนวนครั้งในการจองต่อเดือน</h4>
+                             <h4>จำนวนครั้งในการจองต่อเดือน ทั้งหมด <span id="sumAllMeet"></span></h4>
                          </div>
                          <div class="col-md-8">
                              <div class="row ">
@@ -118,7 +122,38 @@
                              <canvas id="myPieChart"></canvas>
                          </div>
                      </div>
+                     <hr>
+                     <h4>จำนวนครั้งในการจองของบุคคลและฝ่ายงาน</h4>
+                     <div class="row">
+                         <div class="col-md-6">
+                             <table class="table table-bordered">
+                                 <thead class="table-primary">
+                                     <tr>
+                                         <th>ลำดับ</th>
+                                         <th>ชื่อ</th>
+                                         <th>จำนวนครั้ง</th>
+                                     </tr>
+                                 </thead>
+                                 <tbody id="personCountMeet">
 
+                                 </tbody>
+                             </table>
+                         </div>
+                         <div class="col-md-6">
+                             <table class="table table-bordered">
+                                 <thead class="table-primary">
+                                     <tr>
+                                         <th>ลำดับ</th>
+                                         <th>ชื่อฝ่ายงาน</th>
+                                         <th>จำนวนครั้ง</th>
+                                     </tr>
+                                 </thead>
+                                 <tbody id="departmentCountMeet">
+
+                                 </tbody>
+                             </table>
+                         </div>
+                     </div>
                  </div>
              </div>
 
@@ -187,6 +222,34 @@
              return s.join(dec);
          }
          chartProgress()
+         loadPersonTable()
+         loadDepTable()
+
+         function loadDepTable() {
+             $.ajax({
+                 type: 'POST',
+                 url: 'getDepartmentCount.php',
+                 data: {
+                     yearChart: yearChart,
+                 },
+                 success: function(resData) {
+                     $('#departmentCountMeet').html(resData)
+                 }
+             })
+         }
+
+         function loadPersonTable() {
+             $.ajax({
+                 type: 'POST',
+                 url: 'getPersonCount.php',
+                 data: {
+                     yearChart: yearChart,
+                 },
+                 success: function(resData) {
+                     $('#personCountMeet').html(resData)
+                 }
+             })
+         }
 
          function chartProgress() {
              $.ajax({
@@ -195,8 +258,10 @@
                  data: {
                      yearChart: yearChart,
                  },
+                 dataType: 'json',
                  success: function(resData) {
-                     $('#chartProgress').html(resData)
+                     $('#chartProgress').html(resData.data)
+                     $('#sumAllMeet').html('' + resData.sumAllMeet + '')
                  }
              })
          }
@@ -215,7 +280,9 @@
          loadChartPie()
          $('#yearChart').change(function() {
              yearChart = $('#yearChart').val()
+             loadPersonTable()
              chartProgress()
+             loadDepTable()
              $.ajax({
                  type: 'POST',
                  url: 'getPieChart.php',
