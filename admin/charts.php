@@ -73,7 +73,7 @@
                  <div class="container-fluid">
                      <div class="row">
                          <div class="col-md-4">
-                             <h4>จำนวนครั้งในการจองต่อเดือน ทั้งหมด <span id="sumAllMeet"></span></h4>
+                             <h4>จำนวนครั้งในการจอง ทั้งหมด <span id="sumAllMeet"></span></h4>
                          </div>
                          <div class="col-md-8">
                              <div class="row ">
