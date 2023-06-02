@@ -39,8 +39,60 @@ if (!isset($_COOKIE["people_id"]) && !isset($_SESSION["people_id"]) && !empty($_
     }
 }
 ?>
+<style>
+    #cover-spin {
+        position: fixed;
+        width: 100%;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        background-color: rgba(255, 255, 255, 0.7);
+        z-index: 9999;
+        display: none;
+    }
+
+    @-webkit-keyframes spin {
+        from {
+            -webkit-transform: rotate(0deg);
+        }
+
+        to {
+            -webkit-transform: rotate(360deg);
+        }
+    }
+
+    @keyframes spin {
+        from {
+            transform: rotate(0deg);
+        }
+
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    #cover-spin::after {
+        content: '';
+        display: block;
+        position: absolute;
+        left: 48%;
+        top: 40%;
+        width: 40px;
+        height: 40px;
+        border-style: solid;
+        border-color: black;
+        border-top-color: transparent;
+        border-width: 4px;
+        border-radius: 50%;
+        -webkit-animation: spin .8s linear infinite;
+        animation: spin .8s linear infinite;
+    }
+</style>
 
 <body>
+    <div id="cover-spin">
+    </div>
     <div>
         <div class="row bg-head text-light p-2">
             <div class="col-md-12">
@@ -569,9 +621,13 @@ if (!isset($_COOKIE["people_id"]) && !isset($_SESSION["people_id"]) && !empty($_
                 url: frm.attr('action'),
                 data: frm.serialize(),
                 dataType: 'json',
+                beforeSend: function() {
+                    $("#cover-spin").show();
+                },
                 success: function(data) {
                     console.log('Submission was successful.');
                     console.log(data)
+                    $("#cover-spin").hide();
                     if (data.status == 200) {
                         clearInput()
                         $('#bookingModal').modal('hide');
@@ -613,7 +669,15 @@ if (!isset($_COOKIE["people_id"]) && !isset($_SESSION["people_id"]) && !empty($_
     })
 
     function clearInput() {
-        $(':input').val('');
+        $('#time_strat').val('')
+        $('#time_end').val('')
+        $('#meet_name').val('')
+        $('#number_people').val('')
+        $('#type_people').val('')
+        $('#detail_meet').val('')
+        // $('#people_name_booking').val('')
+        $('#department_booking').val('')
+        $('#tel').val('')
     }
 
     function removeTable() {
