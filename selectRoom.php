@@ -29,7 +29,7 @@
                         <h4>เลือกห้องประชุม</h4>
                     </div>
                     <div class="col-md-6">
-                        <button class="float-end btn btn-info" id="btnCalendar"><img src="img/schedule.png" width="25px" height="auto"> ปฏิทิน</button>
+                        <!-- <button class="float-end btn btn-info" id="btnCalendar"><img src="img/schedule.png" width="25px" height="auto"> ปฏิทิน</button> -->
                     </div>
                 </div>
             </div>
@@ -73,7 +73,7 @@
                 <div id='calendar'></div>
             </div>
             <div class="modal-footer">
-                <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
