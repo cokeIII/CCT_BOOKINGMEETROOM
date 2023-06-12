@@ -90,7 +90,7 @@ $sql = "insert into booking (
 $sqlCheck = "select * from booking b inner join
 (select *
 from booking where ((time_strat BETWEEN '$time_strat' and '$time_end') or (time_end BETWEEN '$time_strat' and '$time_end')) or ((time_strat <= '$time_strat' and '$time_strat' <= time_end) or (time_strat <= '$time_end' and '$time_end' <= time_end))) as bb on b.id = bb.id
-where b.meet_room_id = '5' and b.status_booking != 'ยกเลิก'";
+where b.meet_room_id = '$meet_room_id' and b.status_booking != 'ยกเลิก'";
 $resCheck = mysqli_query($conn, $sqlCheck);
 $numRowCheck = mysqli_num_rows($resCheck);
 if ($numRowCheck > 0) {
