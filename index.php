@@ -296,11 +296,11 @@ if (!isset($_COOKIE["people_id"]) && !isset($_SESSION["people_id"]) && !empty($_
                     <div class="row">
                         <div class="col-md-6">
                             <label>เริ่ม</label>
-                            <input class="form-control timePick" type="text" name="time_strat" id="time_strat" required>
+                            <input class="form-control timePick" type="text" name="time_strat" id="time_strat" autocomplete="off" required>
                         </div>
                         <div class="col-md-6">
                             <label>สิ้นสุด</label>
-                            <input class="form-control timePick" type="text" name="time_end" id="time_end" required>
+                            <input class="form-control timePick" type="text" name="time_end" id="time_end" autocomplete="off" required>
                         </div>
                     </div>
                     <div class="row mt-2">

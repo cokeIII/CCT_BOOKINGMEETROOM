@@ -44,9 +44,16 @@
          border-radius: 10px;
          color: white;
      }
-     #sumAllMeet{
-        color: blue;
-        font-size: 30px;
+
+     .bg-room-6 {
+         background-color: #055ff0;
+         border-radius: 10px;
+         color: black;
+     }
+
+     #sumAllMeet {
+         color: blue;
+         font-size: 30px;
      }
  </style>
 
@@ -75,7 +82,7 @@
                          <div class="col-md-4">
                              <h4>จำนวนครั้งในการจอง ทั้งหมด <span id="sumAllMeet"></span></h4>
                          </div>
-                         <div class="col-md-8">
+                         <!-- <div class="col-md-8">
                              <div class="row ">
                                  <div class="col-md-2 bg-room-1">
                                      ห้องประชุมพิกุล
@@ -86,14 +93,17 @@
                                  <div class="col-md-2 bg-room-3 ml-1">
                                      ห้องประชุม อีอีซี
                                  </div>
-                                 <div class="col-md-3 bg-room-4 ml-1">
+                                 <div class="col-md-2 bg-room-4 ml-1">
                                      ห้องประชุมกาสะลอง
                                  </div>
                                  <div class="col-md-2 bg-room-5 ml-1">
                                      หอประชุมคมสัน
                                  </div>
+                                 <div class="col-md-2 bg-room-6 ml-1">
+                                     ห้องประชุมชมพูพันธ์ุทิพย์
+                                 </div>
                              </div>
-                         </div>
+                         </div> -->
                      </div>
                      <div class="row">
                          <div class="col-md-1">
@@ -272,6 +282,7 @@
          color['ห้องประชุม อีอีซี'] = '#57cf5d'
          color['ห้องประชุมกาสะลอง'] = '#54d9e3'
          color['หอประชุมคมสัน'] = '#ca26eb'
+         color['ห้องประชุมชมพูพันธ์ุทิพย์'] = '#055ff0'
 
          let chartData = []
          var myLineChart = []
