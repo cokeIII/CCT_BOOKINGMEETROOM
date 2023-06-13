@@ -8,5 +8,6 @@
 <script src="
 https://cdn.jsdelivr.net/npm/fullcalendar@6.1.6/index.global.min.js
 "></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <!-- <script src="https://unpkg.com/popper.js/dist/umd/popper.min.js"></script> -->
 <!-- <script src="https://unpkg.com/tooltip.js/dist/umd/tooltip.min.js"></script> -->

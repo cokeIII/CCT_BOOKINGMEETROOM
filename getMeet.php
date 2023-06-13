@@ -2,6 +2,8 @@
 
 include "connect.php";
 $roomId = $_POST['roomId'];
+date_default_timezone_set('asia/bangkok');
+$dataCer = date('Y-m-d H:i:s');
 function DateThai($strDate)
 {
     $strYear = date("Y", strtotime($strDate)) + 543;
@@ -15,7 +17,7 @@ function DateThai($strDate)
     return "$strDay $strMonthThai $strYear, $strHour:$strMinute";
 }
 
-$sql = "select * from booking where status_booking = 'อนุมัติ' and meet_room_id = '$roomId' and time_end > CURRENT_TIMESTAMP order by time_strat";
+$sql = "select * from booking where status_booking = 'อนุมัติ' and meet_room_id = '$roomId' and time_end > '$dataCer' order by time_strat";
 $res = mysqli_query($conn, $sql);
 $data = "";
 $numRow = mysqli_num_rows($res);

@@ -53,7 +53,9 @@ $meet_name = $_POST["meet_name"];
 $number_people = $_POST["number_people"];
 $type_people = $_POST["type_people"];
 $detail_meet = $_POST["detail_meet"];
-$people_name_booking = $_POST["people_name_booking"];
+$people_name_booking_arr = explode("_", $_POST["people_name_booking"]);
+$people_name_booking = $people_name_booking_arr[0];
+$people_id_booking = $people_name_booking_arr[1];
 $department_booking = $_POST["department_booking"];
 $tel = $_POST["tel"];
 $status_booking = "รอการยืนยัน";
@@ -69,6 +71,7 @@ $sql = "insert into booking (
     type_people,
     detail_meet,
     people_name_booking,
+    people_id_booking,
     department_booking,
     tel,
     status_booking,
@@ -82,6 +85,7 @@ $sql = "insert into booking (
         '$type_people',
         '$detail_meet',
         '$people_name_booking',
+        '$people_id_booking',
         '$department_booking',
         '$tel',
         '$status_booking',

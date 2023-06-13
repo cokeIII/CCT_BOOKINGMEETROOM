@@ -328,7 +328,18 @@ if (!isset($_COOKIE["people_id"]) && !isset($_SESSION["people_id"]) && !empty($_
                     <div class="row  mt-2">
                         <div class="col-md-6">
                             <label><strong>ชื่อผู้ทำการจอง</strong></label>
-                            <input value="<?php echo $people_name; ?>" class="form-control" type="text" name="people_name_booking" id="people_name_booking" required>
+                            <select class="form-control" name="people_name_booking" id="people_name_booking" required>
+                                <option value="">-</option>
+                                <?php
+                                $sqlNB = "select people_id,people_name,people_surname from people";
+                                $resNB = mysqli_query($conn, $sqlNB);
+                                while ($rowNB = mysqli_fetch_array($resNB)) {
+                                ?>
+                                    <option value="<?php echo $rowNB['people_name'] . " " . $rowNB['people_surname'] . "_" . $rowNB['people_id']; ?>"><?php echo $rowNB['people_name'] . " " . $rowNB['people_surname']; ?></option>
+                                <?php } ?>
+                            </select>
+                            <!-- <input value="<?php //echo $people_name; 
+                                                ?>" class="form-control" type="text" name="people_name_booking" id="people_name_booking" required> -->
                         </div>
                         <div class="col-md-6">
                             <label><strong>ฝ่ายงานที่จอง</strong></label>
@@ -420,6 +431,11 @@ if (!isset($_COOKIE["people_id"]) && !isset($_SESSION["people_id"]) && !empty($_
 <?php include "footerSetup.php" ?>
 <script>
     $(document).ready(function() {
+        $('#people_name_booking').select2({
+            width: '100%',
+            dropdownParent: $('#bookingModal')
+        });
+        $('#people_name_booking').val('<?php echo $people_name . "_" . $people_id; ?>').trigger('change')
         $(document).on('click', '#btnCalendar', function() {
             let roomId = $(this).attr('roomId')
             var calendarEl = document.getElementById('calendar');
