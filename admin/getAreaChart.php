@@ -8,7 +8,7 @@ $data = array();
 while ($rowRoom = mysqli_fetch_array($resRoom)) {
     $meet_room_id = $rowRoom['id'];
     $sql = "select count(id) as countMeet,MONTH(time_strat) as monthMeet from booking 
-    where YEAR(time_strat) = '$year' and meet_room_id = '$meet_room_id'
+    where YEAR(time_strat) = '$year' and meet_room_id = '$meet_room_id' and status_booking = 'อนุมัติ'
     group by MONTH(time_strat) 
     ";
     $res = mysqli_query($conn, $sql);
