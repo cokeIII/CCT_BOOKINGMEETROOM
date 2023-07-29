@@ -87,6 +87,7 @@
                                         <th>รายละเอียด</th>
                                         <th>สถานะรายการจอง</th>
                                         <th></th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -116,6 +117,9 @@
                                                     <option value="ยกเลิก" class="text-danger" <?php echo ($row["status_booking"] == "ยกเลิก") ? "selected" : "" ?>>ยกเลิก</option>
                                                     <option value="อนุมัติ" class="text-success" <?php echo ($row["status_booking"] == "อนุมัติ") ? "selected" : "" ?>>อนุมัติ</option>
                                                 </select>
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-warning editBooking" id="<?php echo $row["bId"]; ?>">แก้ไข</button>
                                             </td>
                                             <td>
                                                 <button type="button" class="btn btn-danger delBooking" id="<?php echo $row["bId"]; ?>">ลบ</button>
@@ -236,6 +240,116 @@
         </div>
     </div>
 </div>
+
+<div class="modal" tabindex="-1" id="editDetailModal">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">แก้ไขการจอง</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="addBooking.php" method="post" id="formEditBooking">
+                    <input type="hidden" name="edit_booking_id" id="edit_booking_id">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label><strong>ชื่อห้องประชุม</strong></label>
+                            <select name="meet_room_id" id="edit_room_name" class="form-control" required>
+                                <option value="">-- กรุณาเลือก --</option>
+                                <?php
+                                $sqlRoom = "select * from meet_room";
+                                $resRoom = mysqli_query($conn, $sqlRoom);
+                                while ($rowRoom = mysqli_fetch_array($resRoom)) {
+                                ?>
+                                    <option value="<?php echo $rowRoom['id'] ?>"><?php echo $rowRoom['name'] ?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                    </div>
+                    <label><strong>วันเวลาที่จอง</strong></label>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>เริ่ม</label>
+                            <input class="form-control" type="datetime-local" name="time_strat" id="edit_time_strat" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label>สิ้นสุด</label>
+                            <input class="form-control" type="datetime-local" name="time_end" id="edit_time_end" required>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-12">
+                            <label><strong>ชื่อการประชุม</strong></label>
+                            <input class="form-control" type="text" name="meet_name" id="edit_meet_name" required>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-6">
+                            <label><strong>จำนวนคนที่เข้าร่วมประชุม</strong></label>
+                            <input class="form-control" type="text" name="number_people" id="edit_number_people" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label><strong>ฝ่ายงานตำแหน่งผู้เข้าร่วมประชุม</strong></label>
+                            <input class="form-control" type="text" name="type_people" id="edit_type_people" placeholder="นักเรียน, ผู้บริหาร, หัวหน้างาน" required>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-12">
+                            <label><strong>รายละเอียดเพิ่มในการประชุม</strong></label>
+                            <textarea class="form-control" name="detail_meet" id="edit_detail_meet" cols="30" rows="5"></textarea>
+                        </div>
+                    </div>
+                    <div class="row  mt-2">
+                        <div class="col-md-6">
+                            <label><strong>ชื่อผู้ทำการจอง</strong></label>
+                            <select class="form-control" name="people_name_booking" id="edit_people_name_booking" required>
+                                <option value="">-</option>
+                                <?php
+                                $sqlNB = "select people_id,people_name,people_surname from people";
+                                $resNB = mysqli_query($conn, $sqlNB);
+                                while ($rowNB = mysqli_fetch_array($resNB)) {
+                                ?>
+                                    <option value="<?php echo $rowNB['people_name'] . " " . $rowNB['people_surname'] . "_" . $rowNB['people_id']; ?>"><?php echo $rowNB['people_name'] . " " . $rowNB['people_surname']; ?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label><strong>ฝ่ายงานที่จอง</strong></label>
+                            <select class="form-control" name="department_booking" id="edit_department_booking" required>
+                                <option value="">-- กรุณาเลือก --</option>
+                                <?php
+                                $sqlDep = "select people_dep_id,people_dep_name from people_dep";
+                                $resDep = mysqli_query($conn, $sqlDep);
+                                while ($rowDep = mysqli_fetch_array($resDep)) {
+                                ?>
+                                    <option value="<?php echo $rowDep["people_dep_name"]; ?>"><?php echo $rowDep["people_dep_name"]; ?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-12">
+                            <label><strong>เบอร์โทรติดต่อ</strong></label>
+                            <input class="form-control" type="text" name="tel" id="edit_tel" maxlength="10" required>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-12">
+                            <button type="submit" class="btn btn-warning float-right">แก้ไข</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     $(document).ready(function() {
         table = new DataTable('#bookingTable', {
@@ -259,7 +373,7 @@
                         if (data == "200") {
                             window.location.replace("home.php");
                         } else {
-                            
+
                         }
                     },
                     error: function(data) {
@@ -319,6 +433,61 @@
             },
         });
 
+    })
+    $('#edit_people_name_booking').select2({
+        width: '100%',
+        dropdownParent: $('#editDetailModal')
+    });
+    $(document).on("click", ".editBooking", function() {
+        let id = $(this).attr("id")
+        $.ajax({
+            type: 'POST',
+            url: 'getMeetDetail.php',
+            data: {
+                id: id
+            },
+            dataType: 'json',
+            success: function(data) {
+                console.log('Submission was successful.');
+                console.log(data)
+                let dataM = data[0];
+                $("#edit_booking_id").val(id);
+                $("#edit_room_name").val(dataM.meet_room_id);
+                $("#edit_time_strat").val(dataM.time_strat);
+                $("#edit_time_end").val(dataM.time_end);
+                $("#edit_meet_name").val(dataM.meet_name);
+                $("#edit_number_people").val(dataM.number_people);
+                $("#edit_type_people").val(dataM.type_people);
+                $("#edit_detail_meet").val(dataM.detail_meet);
+                $("#edit_people_name_booking").val(dataM.people_name_booking + '_' + dataM.people_id_booking).trigger('change');
+                $("#edit_department_booking").val(dataM.department_booking);
+                $("#edit_tel").val(dataM.btel);
+                $('#editDetailModal').modal('show')
+            },
+            error: function(data) {
+                console.log('An error occurred.')
+                console.log(data);
+            },
+        });
+
+    })
+    $(document).on("submit", "#formEditBooking", function(e) {
+        e.preventDefault();
+        var form = $(this);
+
+        $.ajax({
+            type: "POST",
+            url: 'editBooking.php',
+            data: form.serialize(), // serializes the form's elements.
+            success: function(data) {
+                if (data == "SUCCESS") {
+                    alert("แก้ไขรายการสำเร็จ")
+                    location.reload()
+                } else {
+                    alert(data)
+                }
+            }
+        });
     })
     $(document).on("click", ".btn-detail", function() {
         let id = $(this).attr("id")
