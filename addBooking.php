@@ -60,7 +60,7 @@ $department_booking = $_POST["department_booking"];
 $tel = $_POST["tel"];
 $status_booking = "รอการยืนยัน";
 // $note = $_POST["detail_meet"];
-$user_id = $_POST["user_id"];
+$user_id = (!empty($_POST["user_id"]) ? $_POST["user_id"] : $people_id_booking);
 
 $sql = "insert into booking (
     meet_room_id,
